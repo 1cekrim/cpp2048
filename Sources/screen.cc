@@ -20,6 +20,12 @@ int Screen::GetKey()
     return _getch();
 }
 
+void Screen::PauseGameUntilPressEnter()
+{
+    std::cout << "Press Enter key to continue..." << '\n';
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+}
+
 #else
 
 #include <termios.h>
@@ -103,6 +109,7 @@ std::string ImageToString(const ImageVector& image)
         imageStream << '\n';
     }
 
+    imageStream << Color::gmReset;
     return imageStream.str();
 }
 }  // namespace Screen::Image

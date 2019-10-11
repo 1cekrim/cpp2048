@@ -3,6 +3,7 @@
 
 #include <iosfwd>
 #include <string>
+#include <vector>
 
 namespace Screen
 {
@@ -92,7 +93,10 @@ static Modifier bgWhite(Code::BG_WHITE);
 
 namespace Screen::Image
 {
+using ImageVector = std::vector<std::string>;
+
 std::string LogoImage();
+std::string ImageToString(const ImageVector& image);
 }  // namespace Screen::Image
 
 #endif

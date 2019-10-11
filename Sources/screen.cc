@@ -2,8 +2,10 @@
 
 #include <cstdlib>
 #include <iostream>
+#include <map>
 #include <sstream>
 #include <string_view>
+#include <vector>
 
 #ifdef _WIN32
 #include <conio.h>
@@ -60,85 +62,47 @@ namespace Screen::Image
 {
 std::string LogoImage()
 {
-    // 9 x 35
-    constexpr std::size_t height = 9;
-    constexpr std::size_t width = 35;
-    const auto logoText = {
-        "BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB",
-        "BB                                 BB",
-        "BB  BBBBB   BBBBB   BB BB   BBBBB  BB",
-        "BB     BB   BB BB   BB BB   BB BB  BB",
-        "BB  BBBBB   BB BB   BBBBB   BBBBB  BB",
-        "BB  BB      BB BB      BB   BB BB  BB",
-        "BB  BBBBB   BBBBB      BB   BBBBB  BB",
-        "BB                                 BB",
-        "BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB",
+    const ImageVector logoText = {
+        "CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC",
+        "C                                 C",
+        "C  RRRRR   YYYYY   G   G   BBBBB  C",
+        "C      R   Y   Y   G   G   B   B  C",
+        "C  RRRRR   Y   Y   GGGGG   BBBBB  C",
+        "C  R       Y   Y       G   B   B  C",
+        "C  RRRRR   YYYYY       G   BBBBB  C",
+        "C                                 C",
+        "CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC",
     };
-    const auto logo = std::begin(logoText);
+    return ImageToString(logoText);
+}
 
-    std::ostringstream logoImage;
-    logoImage << Color::fgCyan << Color::bgCyan << logo[0];
+std::string ImageToString(const ImageVector& image)
+{
+    static std::map<char, Color::Modifier&> colors{
+        { ' ', Color::bgBlack }, { 'R', Color::bgRed },
+        { 'G', Color::bgGreen }, { 'Y', Color::bgYellow },
+        { 'B', Color::bgBlue },  { 'M', Color::bgMagenta },
+        { 'C', Color::bgCyan },  { 'W', Color::bgWhite },
+    };
 
-    for (std::size_t i = 1; i < height - 1; ++i)
+    std::ostringstream imageStream;
+
+    imageStream << colors.find(' ')->second;
+    char lastColor = ' ';
+
+    for (auto& str : image)
     {
-        logoImage << '\n';
-        std::string_view str = logo[i];
-
-        if (i == 1 || i == height - 2)
+        for (auto& color : str)
         {
-            str.remove_prefix(2);
-            str.remove_suffix(2);
-            logoImage << Color::bgCyan << "  " << Color::bgWhite << str
-                      << Color::bgCyan << "  ";
-            continue;
-        }
-
-        // logoImage << Color::bgCyan << "  ";
-
-        bool alreadyWhite = true;
-
-        for (std::size_t j = 0; j < width; ++j)
-        {
-            if (!alreadyWhite && str[j] == ' ')
+            if (lastColor != color)
             {
-                logoImage << Color::bgWhite;
-                alreadyWhite = true;
+                imageStream << colors.find(lastColor = color)->second;
             }
-            else if (alreadyWhite && str[j] == 'B')
-            {
-                if (j < 3)
-                {
-                    logoImage << Color::bgCyan;
-                }
-                else if (j < 9)
-                {
-                    logoImage << Color::bgRed;
-                }
-                else if (j < 17)
-                {
-                    logoImage << Color::bgYellow;
-                }
-                else if (j < 25)
-                {
-                    logoImage << Color::bgGreen;
-                }
-                else if (j < 32)
-                {
-                    logoImage << Color::bgBlue;
-                }
-                else
-                {
-                    logoImage << Color::bgCyan;
-                }
-                alreadyWhite = false;
-            }
-            logoImage << " ";
+            imageStream << "  ";
         }
-        logoImage << Color::bgCyan << "  ";
+        imageStream << '\n';
     }
 
-    logoImage << '\n' << Color::fgCyan << Color::bgCyan << logo[height - 1];
-
-    return logoImage.str();
+    return imageStream.str();
 }
 }  // namespace Screen::Image

@@ -1,4 +1,5 @@
 #include "screen.hpp"
+#include "menu.hpp"
 
 #include <iostream>
 
@@ -8,8 +9,5 @@ using namespace Image;
 
 int main(void)
 {
-    int a;
-    ClearScreen();
-    DrawFunc(std::cout, LogoImage);
-    std::cin >> a; 
+    Menu::MainMenu();
 }

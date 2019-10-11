@@ -60,6 +60,14 @@ enum class Code
     BG_MAGENTA = 45,
     BG_CYAN = 46,
     BG_WHITE = 47,
+    BG_BRIGHT_RED = 101,
+    BG_BRIGHT_GREEN = 102,
+    BG_BRIGHT_YELLOW = 103,
+    BG_BRIGHT_BLUE = 104,
+    BG_BRIGHT_MAGENTA = 105,
+    BG_BRIGHT_CYAN = 106,
+    BG_BRIGHT_WHITE = 107,
+    BG_BRIGHT_BLACK = 100,
 };
 
 class Modifier
@@ -93,6 +101,15 @@ static Modifier bgBlue(Code::BG_BLUE);
 static Modifier bgMagenta(Code::BG_MAGENTA);
 static Modifier bgCyan(Code::BG_CYAN);
 static Modifier bgWhite(Code::BG_WHITE);
+
+static Modifier bgBrightBlack(Code::BG_BRIGHT_BLACK);
+static Modifier bgBrightRed(Code::BG_BRIGHT_RED);
+static Modifier bgBrightGreen(Code::BG_BRIGHT_GREEN);
+static Modifier bgBrightYellow(Code::BG_BRIGHT_YELLOW);
+static Modifier bgBrightBlue(Code::BG_BRIGHT_BLUE);
+static Modifier bgBrightMagenta(Code::BG_BRIGHT_MAGENTA);
+static Modifier bgBrightCyan(Code::BG_BRIGHT_CYAN);
+static Modifier bgBrightWhite(Code::BG_BRIGHT_WHITE);
 
 }  // namespace Screen::Color
 

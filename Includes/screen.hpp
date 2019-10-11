@@ -29,6 +29,7 @@ void DrawFuncTrigger(std::ostream& os, Functor func, bool& trigger,
 }
 
 void ClearScreen();
+void PauseGameUntilPressEnter();
 int GetKey();
 }  // namespace Screen
 
@@ -70,6 +71,10 @@ class Modifier
     Modifier(Code pCode);
     friend std::ostream& operator<<(std::ostream& os, const Modifier& mod);
 };
+
+static Modifier gmReset(Code::RESET);
+static Modifier gmBoldOn(Code::BOLD_ON);
+static Modifier gmBoldOff(Code::BOLD_OFF);
 
 static Modifier fgBlack(Code::FG_BLACK);
 static Modifier fgRed(Code::FG_RED);

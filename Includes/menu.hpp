@@ -4,6 +4,7 @@
 namespace Menu
 {
 void MainMenu();
+void StartGame();
 }  // namespace Menu
 
 #endif

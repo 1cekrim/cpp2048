@@ -1,4 +1,5 @@
 #include "menu.hpp"
+#include "game.hpp"
 #include "screen.hpp"
 
 #include <iostream>
@@ -48,15 +49,28 @@ void MainMenu()
         switch (choice)
         {
             case '1':
-                break;
+                StartGame();
             case '2':
                 break;
             case '3':
                 return;
             default:
-                std::cout << Color::bgRed << Color::fgWhite << "Wrong Input!\n" << Color::gmReset;
+                std::cout << Color::bgRed << Color::fgWhite << "Wrong Input!\n"
+                          << Color::gmReset;
                 PauseGameUntilPressEnter();
         }
     }
+}
+
+void StartGame()
+{
+    std::size_t n;
+    std::cout << "Input board size n (n x n)" << '\n';
+    std::cin >> n;
+    std::cin.ignore(100, '\n');
+    Game::Game game(n, n);
+    game.CreateBlockRandomPosition();
+    game.DrawBoard(std::cout);
+    Screen::PauseGameUntilPressEnter();
 }
 }  // namespace Menu

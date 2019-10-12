@@ -3,6 +3,7 @@
 
 enum class Dir
 {
+    INVALID,
     LEFT,
     UP,
     RIGHT,

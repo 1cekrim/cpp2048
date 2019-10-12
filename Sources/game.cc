@@ -3,6 +3,7 @@
 
 #include <cmath>
 #include <iomanip>
+#include <iostream>
 #include <string>
 #include <vector>
 
@@ -82,9 +83,56 @@ void Game::DrawBoard(std::ostream& os) const
     os << gmReset << '\n';
 }
 
-void Game::CreateBlockRandomPosition()
+bool Game::CreateBlockRandomPosition()
 {
-    m_board.CreateBlockRandomPosition();
+    return m_board.CreateBlockRandomPosition();
+}
+
+void Game::StartLoop()
+{
+    CreateBlockRandomPosition();
+    while (MainLoopDo())
+        ;
+}
+
+bool Game::MainLoopDo()
+{
+    Screen::ClearScreen();
+    std::cout << Screen::Image::LogoImage();
+    DrawBoard(std::cout);
+    GetKeyAndDoAction();
+    return CreateBlockRandomPosition();
+}
+
+void Game::GetKeyAndDoAction()
+{
+    Dir dir;
+
+    while (true)
+    {
+        int choice = Screen::GetKey();
+
+        switch (choice)
+        {
+            case 'a':
+                dir = Dir::LEFT;
+                break;
+            case 's':
+                dir = Dir::DOWN;
+                break;
+            case 'd':
+                dir = Dir::RIGHT;
+                break;
+            case 'w':
+                dir = Dir::UP;
+                break;
+            default:
+                continue;
+        }
+
+        m_board.MoveBlocks(dir);
+        break;
+    }
 }
 
 }  // namespace Game

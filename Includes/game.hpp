@@ -13,7 +13,10 @@ class Game
  public:
     Game(std::size_t height, std::size_t width);
     void DrawBoard(std::ostream& os) const;
-    void CreateBlockRandomPosition();
+    bool CreateBlockRandomPosition();
+    void StartLoop();
+    bool MainLoopDo();
+    void GetKeyAndDoAction();
 
  private:
     std::size_t m_height, m_width;

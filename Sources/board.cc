@@ -69,12 +69,6 @@ void Board::MoveBlocks([[maybe_unused]] Dir dir)
     // pass
 }
 
-void Board::AbsorbBlocks([[maybe_unused]] BlockIdx target,
-                         [[maybe_unused]] BlockIdx victim)
-{
-    // pass
-}
-
 const std::vector<Block*>& Board::GetBoard() const
 {
     return m_board;
@@ -98,7 +92,7 @@ std::size_t Board::PositionToIdx(std::size_t y, std::size_t x) const
 std::vector<Block*> Board::GetColumnVector(std::size_t x)
 {
     std::vector<Block*> result;
-    
+
     for (std::size_t i = 0; i < m_height; ++i)
     {
         result.push_back(m_board[PositionToIdx(i, x)]);

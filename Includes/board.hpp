@@ -68,7 +68,6 @@ class Board
     bool CreateBlock(BlockIdx idx);
     bool CreateBlockRandomPosition();
     void MoveBlocks(Dir dir);
-    void AbsorbBlocks(BlockIdx target, BlockIdx victim);
     std::size_t GetHeight() const;
     std::size_t GetWidth() const;
     const std::vector<Block*>& GetBoard() const;

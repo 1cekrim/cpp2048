@@ -27,7 +27,7 @@ void Block::SetLevel(std::size_t level)
 }
 
 Board::Board(std::size_t height, std::size_t width)
-    : m_height(height), m_width(width), m_pool(height * width)
+    : m_height(height), m_width(width), m_pool(height * width * 2)
 {
     m_board.resize(height * width, nullptr);
 }
@@ -93,5 +93,29 @@ std::size_t Board::GetWidth() const
 std::size_t Board::PositionToIdx(std::size_t y, std::size_t x) const
 {
     return m_width * y + x;
+}
+
+std::vector<Block*> Board::GetColumnVector(std::size_t x)
+{
+    std::vector<Block*> result;
+    
+    for (std::size_t i = 0; i < m_height; ++i)
+    {
+        result.push_back(m_board[PositionToIdx(i, x)]);
+    }
+
+    return result;
+}
+
+std::vector<Block*> Board::GetRowVector(std::size_t y)
+{
+    std::vector<Block*> result;
+
+    for (std::size_t i = 0; i < m_width; ++i)
+    {
+        result.push_back(m_board[PositionToIdx(y, i)]);
+    }
+
+    return result;
 }
 }  // namespace Board

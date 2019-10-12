@@ -69,8 +69,8 @@ class Board
     bool CreateBlockRandomPosition();
     void MoveBlocks(Dir dir);
     void AbsorbBlocks(BlockIdx target, BlockIdx victim);
-    std::size_t GetHeight() const; 
-    std::size_t GetWidth() const; 
+    std::size_t GetHeight() const;
+    std::size_t GetWidth() const;
     const std::vector<Block*>& GetBoard() const;
     std::size_t PositionToIdx(std::size_t y, std::size_t x) const;
 
@@ -78,6 +78,9 @@ class Board
     std::size_t m_height, m_width;
     ObjectPool<Block> m_pool;
     std::vector<Block*> m_board;
+
+    std::vector<Block*> GetColumnVector(std::size_t x);
+    std::vector<Block*> GetRowVector(std::size_t y);
 };
 }  // namespace Board
 

@@ -69,8 +69,6 @@ void StartGame()
     std::cin >> n;
     std::cin.ignore(100, '\n');
     Game::Game game(n, n);
-    game.CreateBlockRandomPosition();
-    game.DrawBoard(std::cout);
-    Screen::PauseGameUntilPressEnter();
+    game.StartLoop();
 }
 }  // namespace Menu

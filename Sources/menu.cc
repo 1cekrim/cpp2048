@@ -12,8 +12,9 @@ namespace Menu
 {
 void DrawMainMenuChoice(std::ostream& os)
 {
-    const std::vector<std::string> choice = { "1. Start Game",
-                                              "2. View Highscore", "3. exit" };
+    const std::vector<std::string> choice = {
+        "1. Start Game", "2. View Highscore", "3. option", "4. exit"
+    };
     constexpr auto indent = "        ";
 
     os << '\n' << Color::gmBoldOn;
@@ -24,6 +25,26 @@ void DrawMainMenuChoice(std::ostream& os)
     }
 
     os << Color::gmReset;
+}
+
+void DrawOptionMenuChoice(std::ostream& os)
+{
+    
+}
+
+void OptionMenu()
+{
+}
+
+void DrawOptionMenu()
+{
+    ClearScreen();
+
+    std::ostringstream menu;
+    menu << LogoImage();
+    DrawOptionMenuChoice(menu);
+
+    std::cout << menu.str();
 }
 
 void DrawMainMenu()
@@ -50,9 +71,13 @@ void MainMenu()
         {
             case '1':
                 StartGame();
+                break;
             case '2':
                 break;
             case '3':
+                OptionMenu();
+                break;
+            case '4':
                 return;
             default:
                 std::cout << Color::bgRed << Color::fgWhite << "Wrong Input!\n"

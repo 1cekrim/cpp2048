@@ -51,6 +51,7 @@ class Block
  public:
     explicit Block(std::size_t level = 1);
     void SetLevel(std::size_t level);
+    std::size_t GetLevel() const;
     bool operator==(const Block& rhs) const;
     std::size_t GetNumber() const;
 
@@ -71,15 +72,17 @@ class Board
     std::size_t GetHeight() const;
     std::size_t GetWidth() const;
     const std::vector<Block*>& GetBoard() const;
+    void SetBoardBlock(std::size_t y, std::size_t x, Block* block);
+    ObjectPool<Block>& GetObjectPool();
     std::size_t PositionToIdx(std::size_t y, std::size_t x) const;
+
+    std::stack<Block*> GetColumnVector(std::size_t x);
+    std::stack<Block*> GetRowVector(std::size_t y);
 
  private:
     std::size_t m_height, m_width;
     ObjectPool<Block> m_pool;
     std::vector<Block*> m_board;
-
-    std::vector<Block*> GetColumnVector(std::size_t x);
-    std::vector<Block*> GetRowVector(std::size_t y);
 };
 }  // namespace Board
 

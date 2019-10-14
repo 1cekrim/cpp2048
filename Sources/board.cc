@@ -7,9 +7,9 @@ using Random = effolkronium::random_static;
 
 namespace Board
 {
-Block::Block(std::size_t level) : m_level(level)
+Block::Block()
 {
-    // Do nothing.
+    Init();
 }
 
 bool Block::operator==(const Block& rhs) const
@@ -30,6 +30,19 @@ void Block::SetLevel(std::size_t level)
 std::size_t Block::GetLevel() const
 {
     return m_level;
+}
+
+void Block::Init()
+{
+    std::size_t r = Random::get<std::size_t>(0, 99);
+    if (r < 10)
+    {
+        m_level = 2;
+    }
+    else
+    {
+        m_level = 1;
+    }
 }
 
 Board::Board(std::size_t height, std::size_t width)

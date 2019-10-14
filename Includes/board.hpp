@@ -35,6 +35,7 @@ class ObjectPool
     {
         T* ret = m_objects.top();
         m_objects.pop();
+        ret->Init();
         return ret;
     }
 
@@ -49,11 +50,12 @@ class ObjectPool
 class Block
 {
  public:
-    explicit Block(std::size_t level = 1);
+    explicit Block();
     void SetLevel(std::size_t level);
     std::size_t GetLevel() const;
     bool operator==(const Block& rhs) const;
     std::size_t GetNumber() const;
+    void Init();
 
  private:
     std::size_t m_level;

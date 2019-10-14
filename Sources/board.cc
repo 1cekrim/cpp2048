@@ -118,7 +118,7 @@ void Board::MoveBlocks(Dir dir)
 
         if (!noZero.empty())
         {
-            if (isReverse)
+            if (!isReverse)
             {
                 lp = noZero.back();
                 noZero.pop_back();
@@ -134,7 +134,7 @@ void Board::MoveBlocks(Dir dir)
         {
             Block* rp;
 
-            if (isReverse)
+            if (!isReverse)
             {
                 rp = noZero.back();
                 noZero.pop_back();
@@ -149,20 +149,25 @@ void Board::MoveBlocks(Dir dir)
             {
                 pool.Push(rp);
                 lp->SetLevel(lp->GetLevel() + 1);
-                vector.push(lp);
+                result.push_back(lp);
                 lp = nullptr;
                 continue;
             }
             else if (lp != nullptr)
             {
-                vector.push(lp);
+                result.push_back(lp);
             }
             lp = rp;
         }
 
         if (lp != nullptr)
         {
-            vector.push(lp);
+            result.push_back(lp);
+        }
+
+        for (auto i = result.rbegin(); i != result.rend(); ++i)
+        {
+            vector.push(*i);
         }
     };
 

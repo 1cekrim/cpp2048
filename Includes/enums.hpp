@@ -10,11 +10,10 @@ enum class Dir
     DOWN,
 };
 
-enum class Option
+enum class OptionEnum
 {
-    INVALID = 0,
     VIEW_SCORE = 1,
     AUTO_SAVE = 2,
-}
+};
 
 #endif

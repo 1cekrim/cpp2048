@@ -100,11 +100,29 @@ bool Game::MainLoopDo()
     Screen::ClearScreen();
     std::cout << Screen::Image::LogoImage();
     DrawBoard(std::cout);
-    GetKeyAndDoAction();
-    return CreateBlockRandomPosition();
+    if (CanMoveBlocks())
+    {
+        if (GetKeyAndDoAction())
+        {
+            return CreateBlockRandomPosition();
+        }
+        else
+        {
+            return true;
+        }
+    }
+    else
+    {
+        return false;
+    }
 }
 
-void Game::GetKeyAndDoAction()
+bool Game::CanMoveBlocks() const
+{
+    return m_board.CanMoveBlocks();
+}
+
+bool Game::GetKeyAndDoAction()
 {
     Dir dir;
 
@@ -130,9 +148,7 @@ void Game::GetKeyAndDoAction()
                 continue;
         }
 
-        m_board.MoveBlocks(dir);
-        break;
+        return m_board.MoveBlocks(dir);
     }
 }
-
 }  // namespace Game

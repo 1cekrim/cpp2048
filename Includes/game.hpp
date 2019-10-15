@@ -16,7 +16,8 @@ class Game
     bool CreateBlockRandomPosition();
     void StartLoop();
     bool MainLoopDo();
-    void GetKeyAndDoAction();
+    bool GetKeyAndDoAction();
+    bool CanMoveBlocks() const;
 
  private:
     std::size_t m_height, m_width;

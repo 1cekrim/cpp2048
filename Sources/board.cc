@@ -7,9 +7,9 @@ using Random = effolkronium::random_static;
 
 namespace Board
 {
-Block::Block(std::size_t level) : m_level(level)
+Block::Block()
 {
-    // Do nothing.
+    Init();
 }
 
 bool Block::operator==(const Block& rhs) const
@@ -30,6 +30,19 @@ void Block::SetLevel(std::size_t level)
 std::size_t Block::GetLevel() const
 {
     return m_level;
+}
+
+void Block::Init()
+{
+    std::size_t r = Random::get<std::size_t>(0, 99);
+    if (r < 10)
+    {
+        m_level = 2;
+    }
+    else
+    {
+        m_level = 1;
+    }
 }
 
 Board::Board(std::size_t height, std::size_t width)
@@ -70,6 +83,19 @@ bool Board::CreateBlockRandomPosition()
     return CreateBlock(*Random::get(list));
 }
 
+bool Board::CanMoveBlocks() const
+{
+    for (auto& block : m_board)
+    {
+        if (block == nullptr)
+        {
+            return true;
+        }
+    }
+
+    return false;
+}
+
 ObjectPool<Block>& Board::GetObjectPool()
 {
     return m_pool;
@@ -80,7 +106,7 @@ void Board::SetBoardBlock(std::size_t y, std::size_t x, Block* block)
     m_board[PositionToIdx(y, x)] = block;
 }
 
-void Board::MoveBlocks(Dir dir)
+bool Board::MoveBlocks(Dir dir)
 {
     bool isColumn = dir == Dir::DOWN || dir == Dir::UP;
     bool isReverse = dir == Dir::DOWN || dir == Dir::RIGHT;
@@ -105,7 +131,7 @@ void Board::MoveBlocks(Dir dir)
 
         if (!noZero.empty())
         {
-            if (isReverse)
+            if (!isReverse)
             {
                 lp = noZero.back();
                 noZero.pop_back();
@@ -121,7 +147,7 @@ void Board::MoveBlocks(Dir dir)
         {
             Block* rp;
 
-            if (isReverse)
+            if (!isReverse)
             {
                 rp = noZero.back();
                 noZero.pop_back();
@@ -136,26 +162,33 @@ void Board::MoveBlocks(Dir dir)
             {
                 pool.Push(rp);
                 lp->SetLevel(lp->GetLevel() + 1);
-                vector.push(lp);
+                result.push_back(lp);
                 lp = nullptr;
                 continue;
             }
             else if (lp != nullptr)
             {
-                vector.push(lp);
+                result.push_back(lp);
             }
             lp = rp;
         }
 
         if (lp != nullptr)
         {
-            vector.push(lp);
+            result.push_back(lp);
+        }
+
+        for (auto i = result.rbegin(); i != result.rend(); ++i)
+        {
+            vector.push(*i);
         }
     };
 
     auto func = [this, isColumn](std::size_t idx) {
         return isColumn ? GetColumnVector(idx) : GetRowVector(idx);
     };
+
+    std::vector<Block*> origin{ m_board };
 
     for (std::size_t i = 0; i < (isColumn ? m_width : m_height); ++i)
     {
@@ -199,6 +232,16 @@ void Board::MoveBlocks(Dir dir)
             }
         }
     }
+
+    for (std::size_t i = 0; i < origin.size(); ++i)
+    {  
+        if (origin[i] != m_board[i]) 
+        {
+            return true;
+        }
+    }
+
+    return false;
 }
 
 const std::vector<Block*>& Board::GetBoard() const

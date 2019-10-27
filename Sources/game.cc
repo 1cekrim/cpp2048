@@ -111,12 +111,12 @@ bool Game::MainLoopDo()
 {
     Screen::ClearScreen();
     std::cout << Screen::Image::LogoImage();
-    DrawBoard(std::cout);
     if (Option::CheckOption(OptionEnum::VIEW_SCORE))
     {
         std::cout << DrawScore();
     }
-    
+    DrawBoard(std::cout);
+
     if (CanMoveBlocks())
     {
         if (GetKeyAndDoAction())

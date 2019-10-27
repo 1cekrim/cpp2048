@@ -25,7 +25,7 @@ void Game::DrawBoard(std::ostream& os) const
 
     const std::vector<Board::Block*>& blocks = m_board.GetBoard();
 
-    auto blankNumber = [&os](std::size_t number) {
+    auto static blankNumber = [&os](std::size_t number) {
         for (std::size_t i = 0; i < number; ++i)
         {
             os << " ";

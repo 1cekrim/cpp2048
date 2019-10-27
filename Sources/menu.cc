@@ -10,6 +10,8 @@
 using namespace Screen;
 using namespace Image;
 
+extern std::size_t option;
+
 namespace Menu
 {
 void DrawMainMenuChoice(std::ostream& os)
@@ -35,7 +37,7 @@ void DrawOptionMenuChoice(std::ostream& os,
     constexpr auto indent = "        ";
 
     os << '\n' << Color::gmBoldOn;
-    std::size_t op = Option::option;
+    std::size_t op = option;
 
     for (auto& s : options)
     {

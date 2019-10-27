@@ -87,12 +87,51 @@ void Game::DrawBoard(std::ostream& os) const
     os << gmReset << '\n';
 }
 
-std::string Game::DrawScore() const
+void Game::DrawScore(std::ostream& os) const
 {
-    std::stringstream str;
-    str << m_score.GetScore() << '\n';
+    using namespace Screen::Color;
 
-    return str.str();
+    std::stringstream strstream;
+
+    auto static blockNumber = [](std::size_t number) {
+        return std::string(number * 2, ' ');
+    };
+
+    auto static emptyNumber = [](std::size_t number) {
+        return std::string(number, ' ');
+    };
+
+    constexpr auto indent = 5;
+    constexpr auto width = 35;
+    constexpr auto height = 5;
+    constexpr auto text = "Score: ";
+
+    auto boxColor = bgGreen;
+    auto innerColor = bgWhite;    
+
+    auto static drawRow = [&strstream, &width, &height, &innerColor, &boxColor]() {
+        for (std::size_t i = 0; i < (height - 3) / 2; ++i)
+        {
+            strstream << boxColor << blockNumber(1) << gmReset
+                      << innerColor << blockNumber(width - 2) << gmReset << boxColor << blockNumber(1) << gmReset
+                      << '\n';
+        }
+    };
+    std::size_t digit =
+        m_score.GetScore() == 0
+            ? 0
+            : static_cast<std::size_t>(std::log10(m_score.GetScore()));
+
+    strstream << '\n' << boxColor << blockNumber(width) << gmReset << '\n';
+    drawRow();
+    strstream << boxColor << blockNumber(1) << gmReset << innerColor << blockNumber(indent);
+    strstream << fgRed << text << gmReset << innerColor << fgCyan << m_score.GetScore() << gmReset;
+    strstream << gmReset << innerColor << emptyNumber(2 * (width - 2 - indent) - digit - 1 - strlen(text))
+              << boxColor << blockNumber(1) << gmReset << '\n';
+    drawRow();
+    strstream << boxColor << blockNumber(width) << gmReset << '\n' << '\n';
+
+    os << strstream.str();
 }
 
 bool Game::CreateBlockRandomPosition()
@@ -113,7 +152,7 @@ bool Game::MainLoopDo()
     std::cout << Screen::Image::LogoImage();
     if (Option::CheckOption(OptionEnum::VIEW_SCORE))
     {
-        std::cout << DrawScore();
+        DrawScore(std::cout);
     }
     DrawBoard(std::cout);
 

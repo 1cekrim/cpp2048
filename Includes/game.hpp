@@ -15,7 +15,7 @@ class Game
  public:
     Game(std::size_t height, std::size_t width);
     void DrawBoard(std::ostream& os) const;
-    std::string DrawScore() const;
+    void DrawScore(std::ostream& os) const;
     bool CreateBlockRandomPosition();
     void StartLoop();
     bool MainLoopDo();

@@ -1,11 +1,15 @@
 #include "game.hpp"
+#include "option.hpp"
 #include "screen.hpp"
 
 #include <cmath>
 #include <iomanip>
 #include <iostream>
+#include <sstream>
 #include <string>
 #include <vector>
+
+extern std::size_t option;
 
 namespace Game
 {
@@ -83,6 +87,14 @@ void Game::DrawBoard(std::ostream& os) const
     os << gmReset << '\n';
 }
 
+std::string Game::DrawScore() const
+{
+    std::stringstream str;
+    str << m_score.GetScore() << '\n';
+
+    return str.str();
+}
+
 bool Game::CreateBlockRandomPosition()
 {
     return m_board.CreateBlockRandomPosition();
@@ -100,6 +112,11 @@ bool Game::MainLoopDo()
     Screen::ClearScreen();
     std::cout << Screen::Image::LogoImage();
     DrawBoard(std::cout);
+    if (Option::CheckOption(OptionEnum::VIEW_SCORE))
+    {
+        std::cout << DrawScore();
+    }
+    
     if (CanMoveBlocks())
     {
         if (GetKeyAndDoAction())
@@ -148,7 +165,7 @@ bool Game::GetKeyAndDoAction()
                 continue;
         }
 
-        return m_board.MoveBlocks(dir);
+        return m_board.MoveBlocks(dir, m_score);
     }
 }
 }  // namespace Game

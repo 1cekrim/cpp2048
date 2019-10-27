@@ -1,4 +1,5 @@
 #include "board.hpp"
+#include "score.hpp"
 
 #include <deque>
 #include <effolkronium/random.hpp>
@@ -106,12 +107,12 @@ void Board::SetBoardBlock(std::size_t y, std::size_t x, Block* block)
     m_board[PositionToIdx(y, x)] = block;
 }
 
-bool Board::MoveBlocks(Dir dir)
+bool Board::MoveBlocks(Dir dir, Score::Score& score)
 {
     bool isColumn = dir == Dir::DOWN || dir == Dir::UP;
     bool isReverse = dir == Dir::DOWN || dir == Dir::RIGHT;
 
-    auto absorbVector = [this, isReverse](std::stack<Block*>& vector) {
+    auto absorbVector = [this, isReverse, &score](std::stack<Block*>& vector) {
         std::vector<Block*> result;
         std::deque<Block*> noZero;
 
@@ -162,6 +163,7 @@ bool Board::MoveBlocks(Dir dir)
             {
                 pool.Push(rp);
                 lp->SetLevel(lp->GetLevel() + 1);
+                score.AddScore(lp->GetNumber());
                 result.push_back(lp);
                 lp = nullptr;
                 continue;

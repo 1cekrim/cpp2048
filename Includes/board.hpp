@@ -2,6 +2,7 @@
 #define BOARD_H
 
 #include "enums.hpp"
+#include "score.hpp"
 
 #include <stack>
 #include <vector>
@@ -71,7 +72,7 @@ class Board
     bool CreateBlock(BlockIdx idx);
     bool CreateBlockRandomPosition();
     bool CanMoveBlocks() const;
-    bool MoveBlocks(Dir dir);
+    bool MoveBlocks(Dir dir, Score::Score& score);
     std::size_t GetHeight() const;
     std::size_t GetWidth() const;
     const std::vector<Block*>& GetBoard() const;

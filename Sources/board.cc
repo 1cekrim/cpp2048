@@ -1,4 +1,5 @@
 #include "board.hpp"
+#include "score.hpp"
 
 #include <deque>
 #include <effolkronium/random.hpp>
@@ -83,6 +84,19 @@ bool Board::CreateBlockRandomPosition()
     return CreateBlock(*Random::get(list));
 }
 
+bool Board::CanMoveBlocks() const
+{
+    for (auto& block : m_board)
+    {
+        if (block == nullptr)
+        {
+            return true;
+        }
+    }
+
+    return false;
+}
+
 ObjectPool<Block>& Board::GetObjectPool()
 {
     return m_pool;
@@ -93,12 +107,12 @@ void Board::SetBoardBlock(std::size_t y, std::size_t x, Block* block)
     m_board[PositionToIdx(y, x)] = block;
 }
 
-void Board::MoveBlocks(Dir dir)
+bool Board::MoveBlocks(Dir dir, Score::Score& score)
 {
     bool isColumn = dir == Dir::DOWN || dir == Dir::UP;
     bool isReverse = dir == Dir::DOWN || dir == Dir::RIGHT;
 
-    auto absorbVector = [this, isReverse](std::stack<Block*>& vector) {
+    auto absorbVector = [this, isReverse, &score](std::stack<Block*>& vector) {
         std::vector<Block*> result;
         std::deque<Block*> noZero;
 
@@ -149,6 +163,7 @@ void Board::MoveBlocks(Dir dir)
             {
                 pool.Push(rp);
                 lp->SetLevel(lp->GetLevel() + 1);
+                score.AddScore(lp->GetNumber());
                 result.push_back(lp);
                 lp = nullptr;
                 continue;
@@ -174,6 +189,8 @@ void Board::MoveBlocks(Dir dir)
     auto func = [this, isColumn](std::size_t idx) {
         return isColumn ? GetColumnVector(idx) : GetRowVector(idx);
     };
+
+    std::vector<Block*> origin{ m_board };
 
     for (std::size_t i = 0; i < (isColumn ? m_width : m_height); ++i)
     {
@@ -217,6 +234,16 @@ void Board::MoveBlocks(Dir dir)
             }
         }
     }
+
+    for (std::size_t i = 0; i < origin.size(); ++i)
+    {  
+        if (origin[i] != m_board[i]) 
+        {
+            return true;
+        }
+    }
+
+    return false;
 }
 
 const std::vector<Block*>& Board::GetBoard() const

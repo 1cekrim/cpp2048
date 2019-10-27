@@ -7,27 +7,6 @@
 
 namespace Screen
 {
-template <typename Functor>
-void DrawFunc(std::ostream& os, Functor func)
-{
-    os << func();
-}
-
-template <typename Functor>
-void DrawFuncTrigger(std::ostream& os, Functor func, bool& trigger,
-                     bool isSwitch = false)
-{
-    if (trigger)
-    {
-        DrawFunc(os, func);
-
-        if (isSwitch)
-        {
-            trigger = !trigger;
-        }
-    }
-}
-
 void ClearScreen();
 void PauseGameUntilPressEnter();
 int GetKey();

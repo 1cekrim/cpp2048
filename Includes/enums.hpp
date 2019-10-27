@@ -10,4 +10,10 @@ enum class Dir
     DOWN,
 };
 
+enum class OptionEnum
+{
+    VIEW_SCORE = 1,
+    AUTO_SAVE = 2,
+};
+
 #endif
